@@ -148,16 +148,19 @@ The application uses Streamlit's session state to maintain:
    cd streamlit_random_racetrack_generator
    ```
 
-2. **Create and activate virtual environment** (recommended):
-   ```bash
-   python -m venv venv
-   # On Windows:
-   venv\Scripts\activate
-   # On Unix or MacOS:
-   source venv/bin/activate
-   ```
+2. **Activate the virtual environment** (if you haven't already):
+   - If you just cloned the repository and see a `venv/` directory, you can activate it:
+     # On Windows:
+     venv\Scripts\activate
+     # On Unix or MacOS:
+     source venv/bin/activate
+   - If you don't have a virtual environment, create one first:
+     ```bash
+     python -m venv venv
+     # Then activate as above
+     ```
 
-3. **Install dependencies**:
+3. **Install dependencies** (if not already installed):
    ```bash
    pip install streamlit pandas plotly fpdf pycountry
    ```
@@ -166,6 +169,25 @@ The application uses Streamlit's session state to maintain:
    ```bash
    streamlit run app.py
    ```
+
+### Windows Convenience Script (Optional)
+
+For Windows users who want to run `streamlit run app.py` without manually activating the virtual environment each time, you can use the provided batch file:
+
+1. Ensure you are in the project root directory.
+2. Run the following command:
+   ```
+   .\streamlit.bat run app.py
+   ```
+
+   This batch file (`streamlit.bat`) automatically activates the virtual environment and runs the Streamlit command with any arguments you provide.
+
+   > **Note**: The `streamlit.bat` file is already included in the repository. If you deleted it, you can recreate it with the following content:
+   > ```batch
+   > @echo off
+   > call venv\Scripts\activate.bat
+   > streamlit %*
+   > ```
 
 ### Dependencies
 - streamlit: Web application framework
@@ -176,9 +198,11 @@ The application uses Streamlit's session state to maintain:
 
 ## Usage
 
+> **Important**: The `streamlit run app.py` command must be run inside the activated virtual environment. If you see a `ModuleNotFoundError`, make sure the virtual environment is activated.
+
 ### Basic Operation
 
-1. Launch the application using `streamlit run app.py`
+1. Launch the application using `streamlit run app.py` (or use the convenience script on Windows as described above).
 2. Use the sidebar controls to:
    - Upload a custom racetrack.csv file (optional)
    - Adjust global filters (continent, country, racecourse, organizer, length type, track type, race rank)
