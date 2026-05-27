@@ -1,0 +1,6 @@
+streamlit>=1.30
+pandas>=2.0
+plotly>=5.0
+pycountry>=0.55
+fpdf>=1.7
+numpy>=1.24

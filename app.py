@@ -5,11 +5,15 @@ import os
 import time
 import base64
 import json
-import pycountry
-import plotly.express as px
-from fpdf import FPDF
+try:
+    import pycountry
+except ImportError:
+    pycountry = None
+try:
+    from fpdf import FPDF
+except ImportError:
+    FPDF = None
 from datetime import datetime
-
 st.set_page_config(page_title="Horse Racing Racetrack Randomizer", layout="wide", initial_sidebar_state="expanded")
 
 # --- UI Alignment CSS ---
@@ -944,9 +948,11 @@ def get_country_flag(country_name):
         overrides = {'USA': 'US', 'UK': 'GB', 'United Kingdom': 'GB', 'UAE': 'AE', 'South Korea': 'KR', 'Vietnam': 'VN'}
         if country_name in overrides:
             code = overrides[country_name]
-        else:
+        elif pycountry is not None:
             country = pycountry.countries.search_fuzzy(country_name)[0]
             code = country.alpha_2
+        else:
+            return "🏳️"
         return f'<img src="https://flagcdn.com/24x18/{code.lower()}.png" width="18" style="vertical-align: middle; margin-left: 4px; margin-bottom: 2px;">'
     except Exception:
         return "🏳️"
@@ -957,9 +963,11 @@ def get_country_flag_emoji(country_name):
         overrides = {'USA': 'US', 'UK': 'GB', 'United Kingdom': 'GB', 'UAE': 'AE', 'South Korea': 'KR', 'Vietnam': 'VN'}
         if country_name in overrides:
             code = overrides[country_name]
-        else:
+        elif pycountry is not None:
             country = pycountry.countries.search_fuzzy(country_name)[0]
             code = country.alpha_2
+        else:
+            return "🏳️"
         # Convert country code to regional indicator symbols (emoji flags)
         return "".join(chr(127397 + ord(c)) for c in code.upper())
     except Exception:
@@ -1668,6 +1676,8 @@ def format_race_name(name):
     return f'<span class="race-name-official">{name}</span>'
 
 def export_pdf(races_df):
+    if FPDF is None:
+        return None
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
